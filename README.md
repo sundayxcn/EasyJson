@@ -1,3 +1,23 @@
+## 使用方法
+
+```xml
+1. 在根目录build.grade中增加
+`maven { url 'https://www.jitpack.io' }`
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+```
+2. 添加引用
+
+```xml
+implementation 'com.github.sundayxcn:EasyJson:1.0.1'
+```
+
+
 
 ### 组装Json
 

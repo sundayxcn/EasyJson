@@ -1,8 +1,7 @@
 ## 使用方法
-
-```xml
 1. 在根目录build.grade中增加
 `maven { url 'https://www.jitpack.io' }`
+```xml
 allprojects {
     repositories {
         google()

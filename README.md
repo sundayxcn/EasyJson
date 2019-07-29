@@ -1,6 +1,6 @@
 
-##使用方法
-###组装Json
+### 组装Json
+
 #### 支持各种类型
 
 包括 基本类型，基本类型包装对象，对象，数组，List。
@@ -84,7 +84,7 @@ easyTreeJson.put("company.childCompany.address", "shanghai");
     ]
 }
 ```
-####支持对象组合
+#### 支持对象组合
 如果只有一个对象，可以使用简单的方法如下：
 ```java
 json = EasyJson.from(new Company()).build();
@@ -113,7 +113,7 @@ json = EasyJson.from(new Company(),new Type()).build();
 }
 ```
 
-####删除节点
+#### 删除节点
 如果不希望把一个对象中某个属性序列化，那么方法有两种
 1. 在属性前面设置`transient`关键字，如下代码：
 ```java

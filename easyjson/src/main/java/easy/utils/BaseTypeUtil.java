@@ -136,6 +136,7 @@ public class BaseTypeUtil {
 
 
     public static HashMap<String,Boolean> baseType = new HashMap<>();
+
     static {
         baseType.put("String",true);
         baseType.put("Integer",true);

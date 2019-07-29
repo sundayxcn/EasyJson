@@ -2,7 +2,6 @@ package easy;
 
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

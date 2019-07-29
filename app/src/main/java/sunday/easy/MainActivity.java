@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
             for(int i =  0; i< 1 ; i++){
                 final String json = "{\"friend\":[\"haizeng\",\"娜美\"],\"name\":\"part\"}";
                 EasyJson easyJson = new EasyJson(json);
+                String name = easyJson.getString("name");
+                int age = easyJson.getInt("age");
+                List<String> strings = easyJson.getList("friend",String.class);
 
                 Company company = easyJson.toBean(Company.class);
                 Friend friend = easyJson.toBean("friend", Friend.class);

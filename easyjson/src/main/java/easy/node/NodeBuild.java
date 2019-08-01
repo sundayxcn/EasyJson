@@ -233,7 +233,9 @@ public class NodeBuild {
                 String type = c.getSimpleName();
                 if (BaseTypeUtil.isStringBaseType(type)) {
                     Object value = parent.getChildList().get(name);
-                    field.set(o, value);
+                    if(value != null) {
+                        field.set(o, value);
+                    }
                 }else {
                     Object t = parent.getChildList().get(name);
                     if(t instanceof TreeNode) {

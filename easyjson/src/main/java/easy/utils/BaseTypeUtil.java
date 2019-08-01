@@ -140,13 +140,21 @@ public class BaseTypeUtil {
     static {
         baseType.put("String",true);
         baseType.put("Integer",true);
+        baseType.put("int",true);
         baseType.put("Byte",true);
+        baseType.put("byte",true);
         baseType.put("Long",true);
+        baseType.put("long",true);
         baseType.put("Double",true);
+        baseType.put("double",true);
         baseType.put("Float",true);
+        baseType.put("float",true);
         baseType.put("Character",true);
+        baseType.put("char",true);
         baseType.put("Short",true);
+        baseType.put("short",true);
         baseType.put("Boolean",true);
+        baseType.put("boolean",true);
     }
 
     public static boolean isStringBaseType(String type){

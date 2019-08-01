@@ -161,4 +161,30 @@ public class BaseTypeUtil {
         return baseType.get(type) != null;
     }
 
+
+
+    public static Object getDefaultValue(String type){
+        if(type.equals("int")){
+            return 0;
+        }else if(type.equals("float")){
+            return 0.0f;
+        }else if(type.equals("double")){
+            return 0.0;
+        }else if(type.equals("long")){
+            return 0.0;
+        }else if(type.equals("short")){
+            return 0;
+        }else if(type.equals("boolean")){
+            return false;
+        }else if(type.equals("String")){
+            return "";
+        }else if(type.equals("char")){
+            return '0';
+        }else if(type.equals("byte")){
+            return 0;
+        }else{
+            return 0;
+        }
+    }
+
 }

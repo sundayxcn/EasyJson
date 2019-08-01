@@ -1,8 +1,11 @@
 package easy.node;
 
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import easy.utils.BaseTypeUtil;
@@ -215,7 +218,7 @@ public class NodeBuild {
 
 
     public <T> T node2Bean(BaseNode parent,Class<T> tClass) throws IllegalAccessException,InstantiationException {
-        T o = tClass.newInstance();
+        T o = generatorBean(tClass);
         //得到所有属性
         Field[] fields = tClass.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {//遍历
@@ -255,5 +258,34 @@ public class NodeBuild {
         }
 
         return o;
+    }
+
+
+    private static <T> T generatorBean(Class<T> tClass){
+        T o = null;
+        try {
+            Constructor[] declaredContructors = tClass.getDeclaredConstructors();
+            Constructor declaredContructor= declaredContructors[0];
+            Class[] parameterTypes = declaredContructor.getParameterTypes();
+            int count = parameterTypes.length;
+            Object[] paramList = new Object[count];
+            for(int i = 0; i < count;i++){
+                Class cType = parameterTypes[i];
+                String type = cType.getSimpleName();
+                if(BaseTypeUtil.isStringBaseType(type)){
+                    Object def = BaseTypeUtil.getDefaultValue(type);
+                    paramList[i] = def;
+                }else{
+                    paramList[i] = null;
+                }
+            }
+            o = (T) declaredContructor.newInstance(paramList);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }finally {
+            return o;
+        }
     }
 }

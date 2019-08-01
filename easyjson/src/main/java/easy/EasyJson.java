@@ -3,6 +3,10 @@ package easy;
 
 import android.text.TextUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -31,6 +35,10 @@ public class EasyJson {
 
     public EasyJson(String json){
         init(json);
+    }
+
+    public EasyJson(JSONObject jsonObject){
+        this(jsonObject.toString());
     }
 
     private void init(String json){
@@ -194,19 +202,29 @@ public class EasyJson {
 
 
     private void putList(BaseNode parentNode, String key, List<Object> value){
-        TreeArrayNode treeArrayNode = new TreeArrayNode();
-        treeArrayNode.setKey(key);
-        Object o = value.get(0);
-        if(BaseTypeUtil.isBaseType(o)){
-            treeArrayNode.setValue(value);
-        }else{
-            for(Object object : value){
-                TreeNode treeNode = new TreeNode();
-                putAllValue(treeNode,object);
-                treeArrayNode.add("",treeNode);
+        //给对象数组中的每一个对象增加key-value
+        if(parentNode instanceof TreeArrayNode){
+            List list = ((TreeArrayNode) parentNode).getList();
+            int size = list.size();
+            for(int i = 0 ; i < size;i++){
+                TreeNode treeNode = (TreeNode) list.get(i);
+                put(treeNode,key,value.get(i));
             }
+        }else {
+            TreeArrayNode treeArrayNode = new TreeArrayNode();
+            treeArrayNode.setKey(key);
+            Object o = value.get(0);
+            if (BaseTypeUtil.isBaseType(o)) {
+                treeArrayNode.setValue(value);
+            } else {
+                for (Object object : value) {
+                    TreeNode treeNode = new TreeNode();
+                    putAllValue(treeNode, object);
+                    treeArrayNode.add("", treeNode);
+                }
+            }
+            parentNode.add(key, treeArrayNode);
         }
-        parentNode.add(key,treeArrayNode);
     }
 
     private  static BaseNode generatorNode(String key,Object value){
@@ -220,6 +238,16 @@ public class EasyJson {
 
     public String build(){
         return mJsonBuild.build();
+    }
+
+
+    public JSONObject buildJsonObject(){
+        try {
+            return new JSONObject(build());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new JSONObject();
+        }
     }
 
 
@@ -269,6 +297,8 @@ public class EasyJson {
             }else if(findNode instanceof TreeNode) {
                 String fixKey = key.substring(index + 1, size);
                 return getTargetNode((TreeNode) findNode, fixKey);
+            }else if(findNode instanceof TreeArrayNode){
+                return (TreeArrayNode)findNode;
             }else{
                 return null;
             }
@@ -420,18 +450,7 @@ public class EasyJson {
     }
 
 
-    private static <T> T generatorBean(Class<T> tClass){
-        T o = null;
-        try {
-          o  = tClass.newInstance();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }finally {
-            return o;
-        }
-    }
+
 
 
 

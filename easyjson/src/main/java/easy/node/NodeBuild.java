@@ -24,6 +24,8 @@ public class NodeBuild {
     int TYPE_INT = 0;
     int TYPE_LONG = 1;
     int TYPE_DOUBLE = 2;
+    public static final char BOOLEAN_TRUE_STAR = 't';
+    public static final char BOOLEAN_FLASE_STAR = 'f';
     private BaseNode mRootNode;
     private BaseNode mParentNode;
     //private Vector<Char>
@@ -103,6 +105,13 @@ public class NodeBuild {
             arrayIndex++;
             resetArray();
             mParentNode = mParentNode.getParent();
+        }else if(!isKey){
+            if(current == 't' || current == 'T' || current == 'f' || current == 'F'){
+                Boolean o = readBoolean();
+                linkNode(mParentNode,key,o);
+                resetKey();
+            }
+            arrayIndex++;
         }else{
             arrayIndex++;
         }
@@ -116,6 +125,18 @@ public class NodeBuild {
         }else {
             return false;
         }
+    }
+
+
+    private Boolean readBoolean(){
+        int count = 4;
+        char c = jsonArray[arrayIndex];
+        if(c == 'F' || c == 'f'){
+            count = 5;
+        }
+        String value = String.valueOf(jsonArray,arrayIndex,count);
+        arrayIndex +=count;
+        return value.toLowerCase().equals("true");
     }
 
     private Number readNumber() {

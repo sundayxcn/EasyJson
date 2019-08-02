@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -203,6 +202,7 @@ public class EasyJson {
 
     private void putList(BaseNode parentNode, String key, List<Object> value){
         //给对象数组中的每一个对象增加key-value
+        key = getFixKey(key);
         if(parentNode instanceof TreeArrayNode){
             List list = ((TreeArrayNode) parentNode).getList();
             int size = list.size();

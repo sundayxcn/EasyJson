@@ -150,7 +150,7 @@ public class NodeBuild {
             if (v == COMMA || v == ARRAY_END || v == NODE_END) {
                 String value = String.valueOf(charString, 0, index);
                 if (type == TYPE_INT) {
-                    if (index >= 8) {
+                    if (index > 10) {
                         return Long.valueOf(value);
                     } else {
                         return Integer.valueOf(value);

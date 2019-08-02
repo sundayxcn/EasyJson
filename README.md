@@ -20,7 +20,7 @@ implementation 'com.github.sundayxcn:EasyJson:1.0.3'
 
 ### 组装Json
 
-#### 支持各种类型
+#### 各种类型
 
 包括 基本类型，基本类型包装对象，对象，数组，List。
 举例如下：
@@ -60,7 +60,7 @@ public void demo{
 }
 
 ```
-#### 支持层级添加
+#### 层级添加
 对于如上信息，可能不满足我们上传到后台的json格式。比如上面的Company 是别人的类，我们不能在Company里面添加属性，但是需求要求我们在company里面有地址信息。那么可以这么做：
 ```java
 easyTreeJson.put("company.address", "shanghai");
@@ -103,7 +103,7 @@ easyTreeJson.put("company.childCompany.address", "shanghai");
     ]
 }
 ```
-#### 支持对象组合
+#### 对象组合
 如果只有一个对象，可以使用简单的方法如下：
 ```java
 json = EasyJson.from(new Company()).build();
@@ -131,6 +131,59 @@ json = EasyJson.from(new Company(),new Type()).build();
     "level":666
 }
 ```
+#### 数组添加
+如果有一个json数组串，里面类型是对象，但是现在有一个需求是往每一个对象里面插入属性，那么可以这么做
+```java
+        List<Product> productList = new ArrayList<>();
+        productList.add(new Product());
+        productList.add(new Product());
+        EasyJson easyJson = new EasyJson();
+        easyJson.put("data",productList);
+        String json = easyJson.build();
+```
+生成的Json如下：
+```xml
+{
+    "data":[
+        {
+            "age":18,
+            "name":"sunday",
+            "url":"http"
+        },
+        {
+            "age":18,
+            "name":"sunday",
+            "url":"http"
+        }
+    ]
+}
+```
+现在需要给每个对象增加pop属性的值，那么这样做：
+```java
+        String[] vv = new String[]{"111","222"};
+        easyJson.put("data.pop",vv);
+        String json = easyJson.build();
+```
+最终json如下：
+```java
+{
+    "data":[
+        {
+            "age":18,
+            "name":"sunday",
+            "url":"http",
+            "pop":"111"
+        },
+        {
+            "age":18,
+            "name":"sunday",
+            "url":"http",
+            "pop":"222"
+        }
+    ]
+}
+```
+**Tips：**  后添加的vv数组或者list的长度一定要大于等于原json数组长度，否则数组越界访问，导致json串生成失败。
 
 #### 删除节点
 如果不希望把一个对象中某个属性序列化，那么方法有两种
@@ -188,5 +241,16 @@ Company company = easyJson.toBean(Company.class);
 ```java
 Friend friend = easyJson.toBean("friend", Friend.class);
 ```
+### 兼容
+为了减少大家的切换复杂度，支持android 原生的`JSONObject`导入 和导出
+```java
+JSONObject jsonObject = new JSONObject();
+//导入
+EasyJson easyJson = new EasyJson(jsonObject);
+//导出
+easyJson.buildJsonObject();
+```
+
+
 
 如果觉得好用，请给一个`star`,谢谢

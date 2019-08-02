@@ -13,7 +13,7 @@ allprojects {
 2. 添加引用
 
 ```xml
-implementation 'com.github.sundayxcn:EasyJson:1.0.3'
+implementation 'com.github.sundayxcn:EasyJson:1.0.4'
 ```
 
 

@@ -11,9 +11,9 @@ allprojects {
 }
 ```
 2. 添加引用
-目前还不稳定，所以需要引用SNAPSHOT
+目前还不是很稳定，请大家多提issue
 ```xml
-implementation 'com.github.sundayxcn:EasyJson:-SNAPSHOT'
+implementation 'com.github.sundayxcn:EasyJson:1.0.5'
 ```
 
 

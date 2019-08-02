@@ -68,6 +68,7 @@ public class NodeBuild {
                 linkNode(mParentNode, key, baseNode);
                 mParentNode = baseNode;
             }
+            resetArray();
             arrayIndex++;
         } else if (current == DOUBLE_Q) {
             arrayIndex++;

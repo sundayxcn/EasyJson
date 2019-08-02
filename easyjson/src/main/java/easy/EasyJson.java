@@ -407,12 +407,34 @@ public class EasyJson {
 
     private Object getObject(String key){
         BaseNode parentNode  = getTargetNode(mRootNode,key);
+        key = getFixKey(key);
         return parentNode.getChildList().get(key);
     }
 
-    public <T> List<T> getList(String key,Class<T> tClass){
+    public <T> List<T> getList(String key, Class<T> tClass) {
         TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(key);
-        return (List<T>) treeArrayNode.getList();
+        List list = treeArrayNode.getList();
+        int size = list.size();
+        if (size > 0 && list.get(0) instanceof TreeNode) {
+            List<TreeNode> parent = list;
+            List classlist = new ArrayList();
+            try {
+                for (TreeNode a : parent) {
+                    T o = mNodeBuild.node2Bean(a, tClass);
+                    classlist.add(o);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } finally {
+                return classlist;
+            }
+
+
+        } else {
+            return (List<T>) treeArrayNode.getList();
+        }
     }
 
     public <T> T toBean(Class<T> tClass){

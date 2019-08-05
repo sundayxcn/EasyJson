@@ -179,14 +179,14 @@ public class NodeBuild {
             char v = jsonArray[arrayIndex];
             arrayIndex++;
             if (v == DOUBLE_Q || v == COMMA) {
-                String value = String.valueOf(charString, 0, index);
+                String value = String.valueOf(charString, 0, index++);
                 return value;
             } else if(v == 92){//反斜杠过滤
 
             } else{
-                charString[index] = v;
+                charString[index++] = v;
             }
-            index++;
+
         }
 
         return String.valueOf(charString, 0, index);

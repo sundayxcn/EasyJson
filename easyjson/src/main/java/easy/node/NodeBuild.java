@@ -181,6 +181,8 @@ public class NodeBuild {
             if (v == DOUBLE_Q || v == COMMA) {
                 String value = String.valueOf(charString, 0, index);
                 return value;
+            } else if(v == 92){//反斜杠过滤
+
             } else{
                 charString[index] = v;
             }

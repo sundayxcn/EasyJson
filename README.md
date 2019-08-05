@@ -13,7 +13,7 @@ allprojects {
 2. 添加引用
 目前还不是很稳定，请大家多提issue
 ```xml
-implementation 'com.github.sundayxcn:EasyJson:1.0.5'
+implementation 'com.github.sundayxcn:EasyJson:42c73d21b7'
 ```
 
 

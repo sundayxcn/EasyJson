@@ -149,7 +149,7 @@ public class NodeBuild {
         int type = TYPE_INT;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
-            if (v == COMMA || v == ARRAY_END || v == NODE_END || v == STOP) {
+            if (v == COMMA || v == ARRAY_END || v == NODE_END) {
                 String value = String.valueOf(charString, 0, index);
                 if (type == TYPE_INT) {
                     if (index > 10) {
@@ -161,14 +161,15 @@ public class NodeBuild {
                     return Double.valueOf(value);
                 }
             } else if (v == '.') {
-                charString[index] = v;
+                charString[index++] = v;
                 type = TYPE_DOUBLE;
                 arrayIndex++;
+            } else if( v < 48){
+                arrayIndex++;
             } else {
-                charString[index] = v;
+                charString[index++] = v;
                 arrayIndex++;
             }
-            index++;
         }
 
         return Integer.valueOf("0");

@@ -17,6 +17,7 @@ import static easy.json.JsonBuild.DIV;
 import static easy.json.JsonBuild.DOUBLE_Q;
 import static easy.json.JsonBuild.NODE_END;
 import static easy.json.JsonBuild.NODE_START;
+import static easy.json.JsonBuild.STOP;
 
 /**
  * @auth sunday
@@ -148,7 +149,7 @@ public class NodeBuild {
         int type = TYPE_INT;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
-            if (v == COMMA || v == ARRAY_END || v == NODE_END) {
+            if (v == COMMA || v == ARRAY_END || v == NODE_END || v == STOP) {
                 String value = String.valueOf(charString, 0, index);
                 if (type == TYPE_INT) {
                     if (index > 10) {
@@ -181,7 +182,7 @@ public class NodeBuild {
             if (v == DOUBLE_Q || v == COMMA) {
                 String value = String.valueOf(charString, 0, index++);
                 return value;
-            } else if(v == 92){//反斜杠过滤
+            } else if(v == STOP){//反斜杠过滤
 
             } else{
                 charString[index++] = v;

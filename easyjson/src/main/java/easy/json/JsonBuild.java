@@ -25,6 +25,7 @@ public class JsonBuild {
     public static final char COMMA = ',';
     public static final char DOUBLE_Q = '\"';
     public static final char DIV = ':';
+    public static final char STOP = 92;//反斜杠
     private BaseNode mRootNode;
     private StringBuilder stringBuffer = new StringBuilder();
 

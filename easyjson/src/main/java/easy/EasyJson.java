@@ -375,6 +375,18 @@ public class EasyJson {
         removeNode(mRootNode, key);
     }
 
+
+
+    public String getString(String key,String defaultValue){
+        String value = getString(key);
+        if(value.length() == 0){
+            return defaultValue;
+        }else{
+            return value;
+        }
+    }
+
+
     public String getString(String key) {
         Object object = getObject(key);
         if (object == null) {
@@ -383,6 +395,18 @@ public class EasyJson {
             return object.toString();
         }
     }
+
+
+
+    public int getInt(String key,int defaultValue){
+        Object object = getObject(key);
+        if(object == null){
+            return defaultValue;
+        }else{
+            return (int) object;
+        }
+    }
+
 
     public int getInt(String key) {
         Object object = getObject(key);
@@ -400,6 +424,15 @@ public class EasyJson {
             return 0.0f;
         } else {
             return (float) object;
+        }
+    }
+
+    public boolean getBoolean(String key,boolean defaultValue) {
+        Object object = getObject(key);
+        if (object == null) {
+            return defaultValue;
+        } else {
+            return (boolean) object;
         }
     }
 

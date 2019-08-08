@@ -161,13 +161,13 @@ public class NodeBuild {
                     return Double.valueOf(value);
                 }
             } else if (v == '.') {
-                charString[index++] = v;
                 type = TYPE_DOUBLE;
+                charString[index++] = v;
                 arrayIndex++;
-            } else if( v < 48){
+            } else if(charIsNumber(v)){
+                charString[index++] = v;
                 arrayIndex++;
             } else {
-                charString[index++] = v;
                 arrayIndex++;
             }
         }

@@ -1,6 +1,8 @@
 package easy.node;
 
 
+import android.text.TextUtils;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import easy.utils.Adapter;
 import easy.utils.BaseTypeUtil;
 
 import static easy.json.JsonBuild.ARRAY_END;
@@ -241,7 +244,22 @@ public class NodeBuild {
                 String type = c.getSimpleName();
                 if (BaseTypeUtil.isStringBaseType(type)) {
                     Object value = parent.getChildList().get(name);
-                    if(value != null) {
+                    //找不到key，就从注解中找适配key
+                    if (value == null) {
+                        Adapter adapter = field.getAnnotation(Adapter.class);
+                        if(adapter != null) {
+                            String[] adNames = adapter.value();
+                            for (String secName : adNames) {
+                                if (!TextUtils.isEmpty(secName)) {
+                                    value = parent.getChildList().get(secName);
+                                    if (value != null) {
+                                        field.set(o, value);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }else{
                         field.set(o, value);
                     }
                 }else {

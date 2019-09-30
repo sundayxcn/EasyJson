@@ -11,9 +11,8 @@ allprojects {
 }
 ```
 2. 添加引用
-目前还不是很稳定，请大家多提issue
 ```xml
-implementation 'com.github.sundayxcn:EasyJson:42c73d21b7'
+implementation 'com.github.sundayxcn:EasyJson:1.0.8'
 ```
 
 
@@ -251,6 +250,40 @@ EasyJson easyJson = new EasyJson(jsonObject);
 easyJson.buildJsonObject();
 ```
 
+###高级用法
+- 支持获取单层所有的key
+```java
+//获取跟节点的所有key
+easyJson.getKeys()
+//获取指定节点的所有key
+easyJson.getKeys("node");
+```
+- 支持多json串合并
+
+```java
+	       String json = "{\"firstNam2e\":\"fan\",\"secondName\":\"name\"}";
+        EasyJson easyJson = new EasyJson(json);
+        easyJson.join("{\"param1\":\"123\",\"param2\":\"1234\",\"dou\":{\"person\":\"haha\"}}");
+        //Friend friend = easyJson.toBean(Friend.class);
+        String text = easyJson.build();
+```
+	生成的串如下:
+```xml
+{
+    "firstNam2e":"fan",
+    "secondName":"name",
+    "param1":"123",
+    "param2":"1234",
+    "dou":{
+        "person":"haha"
+    }
+}
+```
+如果希望新的json串需要一个新的key在下层,使用
+```java
+        easyJson.join("newNode","{\"param1\":\"123\",\"param2\":\"1234\",\"dou\":{\"person\":\"haha\"}}");
+
+```
 
 
 如果觉得好用，请给一个`star`,谢谢

@@ -9,7 +9,10 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import easy.json.JsonBuild;
 import easy.node.BaseNode;
@@ -530,5 +533,63 @@ public class EasyJson {
         }
     }
 
+    public List<String> getKeys(){
+        return getNodeKeys(mRootNode);
+    }
 
+    private List<String> getNodeKeys(BaseNode baseNode){
+        List<String> keyList = new ArrayList<>();
+        Map<String,Object> map =  baseNode.getChildList();
+        Set<Map.Entry<String,Object>> set = map.entrySet();
+        Iterator<Map.Entry<String,Object>> iterator = set.iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String,Object> entry = iterator.next();
+            keyList.add(entry.getKey());
+        }
+        return keyList;
+    }
+
+    public List<String> getKeys(String nodeKey){
+        BaseNode baseNode = getTargetNode(mRootNode,nodeKey);
+        return getNodeKeys(baseNode);
+    }
+
+    private BaseNode getRootNode(){
+        return mRootNode;
+    }
+
+
+    /**
+     * 连接Json串，
+     * @param json 将json串插入到同一个层次的json串中
+     * */
+    public EasyJson join(String json){
+        EasyJson easyJson = new EasyJson(json);
+
+        Map<String,Object> map = easyJson.getRootNode().getChildList();
+        Set<Map.Entry<String,Object>> set = map.entrySet();
+        Iterator<Map.Entry<String,Object>> iterator = set.iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String,Object> entry = iterator.next();
+            mRootNode.add(entry.getKey(),entry.getValue());
+        }
+
+        return this;
+    }
+
+
+    /**
+     * 连接Json串，将json插入到一个新key
+     * @param key 插入的key
+     * @param json 插入的json串
+     * */
+    public EasyJson join(String key,String json){
+        EasyJson easyJson = new EasyJson(json);
+        String relKey = getFixKey(key);
+
+        BaseNode parent = getTargetNode(mRootNode,key);
+        parent.add(relKey,easyJson.getRootNode());
+
+        return this;
+    }
 }

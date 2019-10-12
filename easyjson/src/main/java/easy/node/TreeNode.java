@@ -2,6 +2,8 @@ package easy.node;
 
 import java.util.LinkedHashMap;
 
+import easy.json.JsonBuild;
+
 
 /**
  * @auth sunday
@@ -43,6 +45,13 @@ public class TreeNode implements BaseNode {
     public BaseNode getParent() {
         return parent;
     }
+
+    @Override
+    public String build() {
+        JsonBuild jsonBuild = new JsonBuild(this);
+        return jsonBuild.build();
+    }
+
 
     @Override
     public void setParent(BaseNode parent) {

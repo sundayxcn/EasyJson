@@ -23,4 +23,6 @@ public interface BaseNode {
     void setParent(BaseNode parent);
 
     BaseNode getParent();
+
+    String build();
 }

@@ -90,7 +90,7 @@ public class JsonBuild {
         stringBuffer.append(COMMA);
     }
 
-    private void buildChild(String key, Object object){
+    public void buildChild(String key, Object object){
         //StringBuilder stringBuffer = new StringBuilder();
         if(object instanceof TreeNode){
             addKey(key);

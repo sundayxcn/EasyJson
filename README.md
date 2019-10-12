@@ -12,7 +12,7 @@ allprojects {
 ```
 2. 添加引用
 ```xml
-implementation 'com.github.sundayxcn:EasyJson:1.0.8'
+implementation 'com.github.sundayxcn:EasyJson:1.0.9'
 ```
 
 
@@ -279,11 +279,21 @@ easyJson.getKeys("node");
     }
 }
 ```
-如果希望新的json串需要一个新的key在下层,使用
+- 支持子节点生成单独的json串
+比如上面这个json串，希望拿到如下的串
+```xml
+{
+	"person":"haha"
+}
+```
+则方法如下：
 ```java
-        easyJson.join("newNode","{\"param1\":\"123\",\"param2\":\"1234\",\"dou\":{\"person\":\"haha\"}}");
-
+				//方法一
+        BaseNode node = easyJson.getNode("dou");
+        String realData = node.build();
+        //方法二
+        String ss = easyJson.buildKey("dou");
 ```
 
 
-如果觉得好用，请给一个`star`,谢谢
+

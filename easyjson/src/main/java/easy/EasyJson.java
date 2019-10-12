@@ -30,7 +30,6 @@ import easy.utils.BaseTypeUtil;
 public class EasyJson {
     public static final String NULL_STRING = "";
     private BaseNode mRootNode;
-    private JsonBuild mJsonBuild;
     private NodeBuild mNodeBuild;
 
     public EasyJson() {
@@ -83,7 +82,6 @@ public class EasyJson {
             mRootNode = mNodeBuild.parse(json);
         }
 
-        mJsonBuild = new JsonBuild(mRootNode);
     }
 
     public void put(String key, Object value) {
@@ -256,7 +254,8 @@ public class EasyJson {
     }
 
     public String build() {
-        return mJsonBuild.build();
+        JsonBuild jsonBuild = new JsonBuild(mRootNode);
+        return jsonBuild.build();
     }
 
     public JSONObject buildJsonObject() {
@@ -551,7 +550,14 @@ public class EasyJson {
 
     public List<String> getKeys(String nodeKey){
         BaseNode baseNode = getTargetNode(mRootNode,nodeKey);
-        return getNodeKeys(baseNode);
+        String key = getFixKey(nodeKey);
+        Map<String,Object> map = baseNode.getChildList();
+        Object object = map.get(key);
+        if(object instanceof BaseNode) {
+            return getNodeKeys((BaseNode) object);
+        }else{
+            return new ArrayList<>();
+        }
     }
 
     private BaseNode getRootNode(){
@@ -592,4 +598,28 @@ public class EasyJson {
 
         return this;
     }
+
+
+    public String buildKey(String key){
+        BaseNode node = getNode(key);
+        if(node == null){
+            return null;
+        }else{
+            return node.build();
+        }
+    }
+
+    public BaseNode getNode(String key){
+        BaseNode baseNode = getTargetNode(mRootNode,key);
+        String realKey = getFixKey(key);
+        Map<String,Object> map = baseNode.getChildList();
+        Object object = map.get(realKey);
+        if(object instanceof BaseNode) {
+            return ((BaseNode) object);
+        }else{
+            return null;
+        }
+    }
+
+
 }

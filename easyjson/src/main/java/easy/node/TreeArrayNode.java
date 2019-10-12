@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import easy.json.JsonBuild;
+
 /**
  * @auth sunday
  * @Data 2019-07-04
@@ -32,6 +34,13 @@ public class TreeArrayNode implements BaseNode {
     public BaseNode getParent() {
         return parent;
     }
+
+    @Override
+    public String build() {
+        JsonBuild jsonBuild = new JsonBuild(this);
+        return jsonBuild.build();
+    }
+
 
     public void setKey(String key) {
         this.key = key;

@@ -394,7 +394,11 @@ public class EasyJson {
         if (object == null) {
             return NULL_STRING;
         } else {
-            return object.toString();
+            if(object instanceof BaseNode){
+                return ((BaseNode)object).build();
+            }else {
+                return object.toString();
+            }
         }
     }
 

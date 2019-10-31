@@ -179,22 +179,22 @@ public class NodeBuild {
     }
 
     private String readString() {
-        int index = 0;
+        int index = arrayIndex;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
             arrayIndex++;
             if (v == DOUBLE_Q || v == COMMA) {
-                String value = String.valueOf(charString, 0, index++);
+                String value = String.valueOf(jsonArray, index, arrayIndex - index - 1);
                 return value;
             } else if(v == STOP){//反斜杠过滤
 
             } else{
-                charString[index++] = v;
+                //charString[index++] = v;
             }
 
         }
 
-        return String.valueOf(charString, 0, index);
+        return String.valueOf(jsonArray, index, arrayIndex - index - 1);
     }
 
 

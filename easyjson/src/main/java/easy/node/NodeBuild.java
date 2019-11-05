@@ -188,7 +188,7 @@ public class NodeBuild {
                 String value = String.valueOf(jsonArray, index, arrayIndex - index - 1);
                 return value;
             } else if(v == STOP){//反斜杠过滤
-
+                arrayIndex++;
             } else{
                 //charString[index++] = v;
             }

@@ -183,7 +183,8 @@ public class NodeBuild {
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
             arrayIndex++;
-            if (v == DOUBLE_Q || v == COMMA) {
+            //解决字符串中存在逗号会中断
+            if (v == DOUBLE_Q ){//|| v == COMMA) {
                 String value = String.valueOf(jsonArray, index, arrayIndex - index - 1);
                 return value;
             } else if(v == STOP){//反斜杠过滤

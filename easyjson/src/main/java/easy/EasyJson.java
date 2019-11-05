@@ -79,7 +79,11 @@ public class EasyJson {
         if (TextUtils.isEmpty(json)) {
             mRootNode = new TreeNode();
         } else {
-            mRootNode = mNodeBuild.parse(json);
+            try{
+                mRootNode = mNodeBuild.parse(json);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
     }

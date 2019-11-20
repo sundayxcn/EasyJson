@@ -116,7 +116,7 @@ public class EasyJson implements BaseOperator {
         return parentNode;
     }
 
-    private static String getFixKey(String key) {
+    public static String getFixKey(String key) {
         String[] group = key.split("\\.");
         if (group.length == 1) {
             return key;
@@ -556,7 +556,7 @@ public class EasyJson implements BaseOperator {
 
 
     public BaseNode createNode(String key){
-        return put(mRootNode,key,"");
+        return mRootNode.createNode(key);
     }
 
 

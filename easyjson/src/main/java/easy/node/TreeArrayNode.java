@@ -42,6 +42,11 @@ public class TreeArrayNode implements BaseNode {
     }
 
     @Override
+    public BaseNode createNode(String key) {
+        return null;
+    }
+
+    @Override
     public BaseNode put(String key, Object value) {
         return null;
     }

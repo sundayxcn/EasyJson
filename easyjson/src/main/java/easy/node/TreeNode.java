@@ -67,6 +67,14 @@ public class TreeNode implements BaseNode {
         return jsonBuild.build();
     }
 
+    @Override
+    public BaseNode createNode(String key) {
+        key = EasyJson.getFixKey(key);
+        BaseNode treeNode = EasyJson.generatorNullNode(key);
+        add(key, treeNode);
+        return treeNode;
+    }
+
     public Object getValue() {
         return value;
     }

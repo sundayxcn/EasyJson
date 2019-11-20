@@ -27,4 +27,6 @@ public interface BaseNode extends BaseOperator {
     BaseNode getParent();
 
     String build();
+
+    BaseNode createNode(String key);
 }

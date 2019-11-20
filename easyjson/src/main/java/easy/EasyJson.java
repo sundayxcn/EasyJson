@@ -271,7 +271,7 @@ public class EasyJson {
         }
     }
 
-    private String getFixKey(String key) {
+    private static String getFixKey(String key) {
         String[] group = key.split("\\.");
         if (group.length == 1) {
             return key;
@@ -283,9 +283,9 @@ public class EasyJson {
     /**
      * 查找当前节点应该插入到哪个节点之下，也就是找father
      **/
-    private BaseNode getTargetNode(BaseNode treeNode, String key) {
+    private static BaseNode getTargetNode(BaseNode treeNode, String key) {
         if (TextUtils.isEmpty(key)) {
-            return mRootNode;
+            return treeNode;
         }
 
 
@@ -384,88 +384,42 @@ public class EasyJson {
 
 
     public String getString(String key,String defaultValue){
-        String value = getString(key);
-        if(value.length() == 0){
-            return defaultValue;
+        if(mRootNode instanceof TreeNode){
+            return ((TreeNode)mRootNode).getString(key,defaultValue);
         }else{
-            return value;
+            return "";
         }
     }
-
 
     public String getString(String key) {
-        Object object = getObject(key);
-        if (object == null) {
-            return NULL_STRING;
-        } else {
-            if(object instanceof BaseNode){
-                return ((BaseNode)object).build();
-            }else {
-                return object.toString();
-            }
-        }
+        return getString(key,"");
     }
 
-
-
     public int getInt(String key,int defaultValue){
-        Object object = getObject(key);
-        if(object == null){
-            return defaultValue;
-        }else{
-            return (int) object;
-        }
+        return ((TreeNode)mRootNode).getInt(key,defaultValue);
     }
 
 
     public int getInt(String key) {
-        Object object = getObject(key);
-        if (object == null) {
-            return 0;
-        } else {
-            return (int) object;
-        }
-    }
-
-
-    public float getFloat(String key) {
-        Object object = getObject(key);
-        if (object == null) {
-            return 0.0f;
-        } else {
-            return (float) object;
-        }
+        return getInt(key,0);
     }
 
     public boolean getBoolean(String key,boolean defaultValue) {
-        Object object = getObject(key);
-        if (object == null) {
-            return defaultValue;
-        } else {
-            return (boolean) object;
+        if(mRootNode instanceof TreeNode){
+            return ((TreeNode)mRootNode).getBoolean(key,defaultValue);
+        }else{
+            return false;
         }
     }
 
     public boolean getBoolean(String key) {
-        Object object = getObject(key);
-        if (object == null) {
-            return false;
-        } else {
-            return (boolean) object;
-        }
+        return getBoolean(key,false);
     }
 
-    public double getDouble(String key) {
-        Object object = getObject(key);
-        if (object == null) {
-            return 0.0;
-        } else {
-            return (double) object;
-        }
-    }
 
-    private Object getObject(String key) {
-        BaseNode parentNode = getTargetNode(mRootNode, key);
+
+    public static Object getObject(BaseNode baseNode,String key) {
+        BaseNode parentNode = getTargetNode(baseNode, key);
         key = getFixKey(key);
         if (parentNode != null && parentNode.getChildList().size() > 0) {
             Object object = parentNode.getChildList().get(key);
@@ -476,7 +430,7 @@ public class EasyJson {
     }
 
     public <T> List<T> getList(String key, Class<T> tClass) {
-        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(key);
+        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(mRootNode,key);
 
         if (treeArrayNode == null) {
             return new ArrayList<>();

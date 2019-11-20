@@ -1,8 +1,14 @@
 package easy.node;
 
+import android.text.TextUtils;
+
 import java.util.LinkedHashMap;
 
+import easy.EasyJson;
 import easy.json.JsonBuild;
+
+import static easy.EasyJson.NULL_STRING;
+import static easy.EasyJson.getObject;
 
 
 /**
@@ -82,6 +88,61 @@ public class TreeNode implements BaseNode {
 
     public LinkedHashMap<String, Object> getChildList() {
         return childList;
+    }
+
+
+    public String getString(String key,String defaultValue){
+
+        Object object = getObject(this,key);
+        if (object == null) {
+            return defaultValue;
+        } else {
+            if(object instanceof BaseNode){
+                return ((BaseNode)object).build();
+            }else {
+                String value = object.toString();
+                if(TextUtils.isEmpty(value)){
+                    return defaultValue;
+                }else {
+                    return value;
+                }
+            }
+        }
+
+    }
+
+
+    public String getString(String key) {
+        return getString(key,"");
+    }
+
+
+    public int getInt(String key,int defaultValue){
+        Object object = getObject(this,key);
+        if(object == null){
+            return defaultValue;
+        }else{
+            return (int) object;
+        }
+    }
+
+
+    public int getInt(String key) {
+        return getInt(key,0);
+    }
+
+
+    public boolean getBoolean(String key,boolean defaultValue) {
+        Object object = getObject(this,key);
+        if (object == null) {
+            return defaultValue;
+        } else {
+            return (boolean) object;
+        }
+    }
+
+    public boolean getBoolean(String key) {
+        return getBoolean(key,false);
     }
 
 }

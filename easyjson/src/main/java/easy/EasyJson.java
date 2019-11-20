@@ -27,7 +27,7 @@ import easy.utils.BaseTypeUtil;
  * @Data 2019-07-04
  * @description stringbuffer 本身会将基本类型装箱，所以对于任何类型都先转换成Object来处理
  */
-public class EasyJson {
+public class EasyJson implements BaseOperator {
     public static final String NULL_STRING = "";
     private BaseNode mRootNode;
     private NodeBuild mNodeBuild;
@@ -73,164 +73,22 @@ public class EasyJson {
         return easyJson;
     }
 
-    private void init(String json) {
-        mNodeBuild = new NodeBuild();
-
-        if (TextUtils.isEmpty(json)) {
-            mRootNode = new TreeNode();
-        } else {
-            try{
-                mRootNode = mNodeBuild.parse(json);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    public void put(String key, Object value) {
-        BaseNode parentNode = getTargetNode(mRootNode, key);
-        if (value instanceof List) {
-            List<Object> list = (List<Object>) value;
-            putList(parentNode, key, list);
-        } else {
-            put(parentNode, key, value);
-        }
-
-    }
-
-    public void put(String key, String... value) {
-
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, int... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, byte... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, long... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, double... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, float... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, char... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, short... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (int v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    public void put(String key, boolean... value) {
-        if (value.length == 1) {
-            put(key, value[0]);
-        } else {
-            BaseNode parentNode = getTargetNode(mRootNode, key);
-            List<Object> list = new ArrayList<>();
-            for (Object v : value) {
-                list.add(v);
-            }
-            putList(parentNode, key, list);
-        }
-    }
-
-    private void put(BaseNode parentNode, String key, Object value) {
+    public static BaseNode put(BaseNode parentNode, String key, Object value) {
         key = getFixKey(key);
         if (BaseTypeUtil.isBaseType(value)) {
             //BaseNode treeNode = generatorNode(key, value);
             parentNode.add(key, value);
+            return parentNode;
         } else {
             BaseNode treeNode = generatorNullNode(key);
             parentNode.add(key, treeNode);
             putAllValue(treeNode, value);
+            return treeNode;
         }
 
     }
 
-    private void putList(BaseNode parentNode, String key, List<Object> value) {
+    public static BaseNode putList(BaseNode parentNode, String key, List<Object> value) {
         //给对象数组中的每一个对象增加key-value
         key = getFixKey(key);
         if (parentNode instanceof TreeArrayNode) {
@@ -255,20 +113,7 @@ public class EasyJson {
             }
             parentNode.add(key, treeArrayNode);
         }
-    }
-
-    public String build() {
-        JsonBuild jsonBuild = new JsonBuild(mRootNode);
-        return jsonBuild.build();
-    }
-
-    public JSONObject buildJsonObject() {
-        try {
-            return new JSONObject(build());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return new JSONObject();
-        }
+        return parentNode;
     }
 
     private static String getFixKey(String key) {
@@ -283,7 +128,7 @@ public class EasyJson {
     /**
      * 查找当前节点应该插入到哪个节点之下，也就是找father
      **/
-    private static BaseNode getTargetNode(BaseNode treeNode, String key) {
+    public static BaseNode getTargetNode(BaseNode treeNode, String key) {
         if (TextUtils.isEmpty(key)) {
             return treeNode;
         }
@@ -317,7 +162,7 @@ public class EasyJson {
     /**
      * 反射对象，构建节点
      */
-    public void putAllValue(BaseNode parentNode, Object object) {
+    public static void putAllValue(BaseNode parentNode, Object object) {
         Class cls = object.getClass();
         //得到所有属性
         Field[] fields = cls.getDeclaredFields();
@@ -352,6 +197,87 @@ public class EasyJson {
 
     }
 
+    public static Object getObject(BaseNode baseNode, String key) {
+        BaseNode parentNode = getTargetNode(baseNode, key);
+        key = getFixKey(key);
+        if (parentNode != null && parentNode.getChildList().size() > 0) {
+            Object object = parentNode.getChildList().get(key);
+            return object;
+        } else {
+            return null;
+        }
+    }
+
+    private void init(String json) {
+        mNodeBuild = new NodeBuild();
+
+        if (TextUtils.isEmpty(json)) {
+            mRootNode = new TreeNode();
+        } else {
+            try {
+                mRootNode = mNodeBuild.parse(json);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public BaseNode put(String key, Object value) {
+        return mRootNode.put(key, value);
+
+    }
+
+    public BaseNode put(String key, String... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, int... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, byte... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, long... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, double... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, float... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, char... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, short... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public BaseNode put(String key, boolean... value) {
+        return mRootNode.put(key, value);
+    }
+
+    public String build() {
+        JsonBuild jsonBuild = new JsonBuild(mRootNode);
+        return jsonBuild.build();
+    }
+
+    public JSONObject buildJsonObject() {
+        try {
+            return new JSONObject(build());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new JSONObject();
+        }
+    }
+
     private void putAllKeyValue(Object object) {
         putAllValue(mRootNode, object);
     }
@@ -381,56 +307,99 @@ public class EasyJson {
         removeNode(mRootNode, key);
     }
 
-
-
-    public String getString(String key,String defaultValue){
-        if(mRootNode instanceof TreeNode){
-            return ((TreeNode)mRootNode).getString(key,defaultValue);
-        }else{
-            return "";
-        }
+    @Override
+    public String getString(String key, String defaultValue) {
+        return mRootNode.getString(key, defaultValue);
     }
 
+    @Override
     public String getString(String key) {
-        return getString(key,"");
+        return getString(key, "");
     }
 
-    public int getInt(String key,int defaultValue){
-        return ((TreeNode)mRootNode).getInt(key,defaultValue);
+    @Override
+    public int getInt(String key, int defaultValue) {
+        return mRootNode.getInt(key, defaultValue);
     }
 
-
+    @Override
     public int getInt(String key) {
-        return getInt(key,0);
+        return getInt(key, 0);
     }
 
-    public boolean getBoolean(String key,boolean defaultValue) {
-        if(mRootNode instanceof TreeNode){
-            return ((TreeNode)mRootNode).getBoolean(key,defaultValue);
-        }else{
-            return false;
-        }
+    @Override
+    public byte getByte(String key) {
+        byte v = 'c';
+        return getByte(key, v);
     }
 
+    @Override
+    public byte getByte(String key, byte defaultValue) {
+        return mRootNode.getByte(key, defaultValue);
+    }
+
+    @Override
+    public long getLong(String key) {
+        return getLong(key, 0);
+    }
+
+    @Override
+    public long getLong(String key, long defaultValue) {
+        return mRootNode.getLong(key, defaultValue);
+    }
+
+    @Override
+    public double getDouble(String key) {
+        return getDouble(key, 0);
+    }
+
+    @Override
+    public double getDouble(String key, double defaultValue) {
+        return mRootNode.getDouble(key, defaultValue);
+    }
+
+    @Override
+    public float getFloat(String key) {
+        return getFloat(key, 0f);
+    }
+
+    @Override
+    public float getFloat(String key, float defaultValue) {
+        return mRootNode.getFloat(key, defaultValue);
+    }
+
+    @Override
+    public char getChar(String key) {
+        return getChar(key, 'c');
+    }
+
+    @Override
+    public char getChar(String key, char defaultValue) {
+        return mRootNode.getChar(key, defaultValue);
+    }
+
+    @Override
+    public short getShort(String key) {
+        return mRootNode.getShort(key);
+    }
+
+    @Override
+    public short getShort(String key, short defaultValue) {
+        return mRootNode.getShort(key, defaultValue);
+    }
+
+    @Override
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return mRootNode.getBoolean(key, defaultValue);
+    }
+
+    @Override
     public boolean getBoolean(String key) {
-        return getBoolean(key,false);
-    }
-
-
-
-    public static Object getObject(BaseNode baseNode,String key) {
-        BaseNode parentNode = getTargetNode(baseNode, key);
-        key = getFixKey(key);
-        if (parentNode != null && parentNode.getChildList().size() > 0) {
-            Object object = parentNode.getChildList().get(key);
-            return object;
-        } else {
-            return null;
-        }
+        return getBoolean(key, false);
     }
 
     public <T> List<T> getList(String key, Class<T> tClass) {
-        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(mRootNode,key);
+        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(mRootNode, key);
 
         if (treeArrayNode == null) {
             return new ArrayList<>();
@@ -494,52 +463,53 @@ public class EasyJson {
         }
     }
 
-    public List<String> getKeys(){
+    public List<String> getKeys() {
         return getNodeKeys(mRootNode);
     }
 
-    private List<String> getNodeKeys(BaseNode baseNode){
+    private List<String> getNodeKeys(BaseNode baseNode) {
         List<String> keyList = new ArrayList<>();
-        Map<String,Object> map =  baseNode.getChildList();
-        Set<Map.Entry<String,Object>> set = map.entrySet();
-        Iterator<Map.Entry<String,Object>> iterator = set.iterator();
-        while (iterator.hasNext()){
-            Map.Entry<String,Object> entry = iterator.next();
+        Map<String, Object> map = baseNode.getChildList();
+        Set<Map.Entry<String, Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
             keyList.add(entry.getKey());
         }
         return keyList;
     }
 
-    public List<String> getKeys(String nodeKey){
-        BaseNode baseNode = getTargetNode(mRootNode,nodeKey);
+    public List<String> getKeys(String nodeKey) {
+        BaseNode baseNode = getTargetNode(mRootNode, nodeKey);
         String key = getFixKey(nodeKey);
-        Map<String,Object> map = baseNode.getChildList();
+        Map<String, Object> map = baseNode.getChildList();
         Object object = map.get(key);
-        if(object instanceof BaseNode) {
+        if (object instanceof BaseNode) {
             return getNodeKeys((BaseNode) object);
-        }else{
+        } else {
             return new ArrayList<>();
         }
     }
 
-    private BaseNode getRootNode(){
+    private BaseNode getRootNode() {
         return mRootNode;
     }
 
 
     /**
      * 连接Json串，
+     *
      * @param json 将json串插入到同一个层次的json串中
-     * */
-    public EasyJson join(String json){
+     */
+    public EasyJson join(String json) {
         EasyJson easyJson = new EasyJson(json);
 
-        Map<String,Object> map = easyJson.getRootNode().getChildList();
-        Set<Map.Entry<String,Object>> set = map.entrySet();
-        Iterator<Map.Entry<String,Object>> iterator = set.iterator();
-        while (iterator.hasNext()){
-            Map.Entry<String,Object> entry = iterator.next();
-            mRootNode.add(entry.getKey(),entry.getValue());
+        Map<String, Object> map = easyJson.getRootNode().getChildList();
+        Set<Map.Entry<String, Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            mRootNode.add(entry.getKey(), entry.getValue());
         }
 
         return this;
@@ -548,37 +518,38 @@ public class EasyJson {
 
     /**
      * 连接Json串，将json插入到一个新key
-     * @param key 插入的key
+     *
+     * @param key  插入的key
      * @param json 插入的json串
-     * */
-    public EasyJson join(String key,String json){
+     */
+    public EasyJson join(String key, String json) {
         EasyJson easyJson = new EasyJson(json);
         String relKey = getFixKey(key);
 
-        BaseNode parent = getTargetNode(mRootNode,key);
-        parent.add(relKey,easyJson.getRootNode());
+        BaseNode parent = getTargetNode(mRootNode, key);
+        parent.add(relKey, easyJson.getRootNode());
 
         return this;
     }
 
 
-    public String buildKey(String key){
+    public String buildKey(String key) {
         BaseNode node = getNode(key);
-        if(node == null){
+        if (node == null) {
             return null;
-        }else{
+        } else {
             return node.build();
         }
     }
 
-    public BaseNode getNode(String key){
-        BaseNode baseNode = getTargetNode(mRootNode,key);
+    public BaseNode getNode(String key) {
+        BaseNode baseNode = getTargetNode(mRootNode, key);
         String realKey = getFixKey(key);
-        Map<String,Object> map = baseNode.getChildList();
+        Map<String, Object> map = baseNode.getChildList();
         Object object = map.get(realKey);
-        if(object instanceof BaseNode) {
+        if (object instanceof BaseNode) {
             return ((BaseNode) object);
-        }else{
+        } else {
             return null;
         }
     }

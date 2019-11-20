@@ -555,4 +555,9 @@ public class EasyJson implements BaseOperator {
     }
 
 
+    public BaseNode createNode(String key){
+        return put(mRootNode,key,"");
+    }
+
+
 }

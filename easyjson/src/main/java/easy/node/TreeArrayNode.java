@@ -42,53 +42,53 @@ public class TreeArrayNode implements BaseNode {
     }
 
     @Override
-    public void put(String key, Object object) {
-
+    public BaseNode put(String key, Object value) {
+        return null;
     }
 
     @Override
-    public void put(String key, String... value) {
-
+    public BaseNode put(String key, String... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, int... value) {
-
+    public BaseNode put(String key, int... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, byte... value) {
-
+    public BaseNode put(String key, byte... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, long... value) {
-
+    public BaseNode put(String key, long... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, double... value) {
-
+    public BaseNode put(String key, double... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, float... value) {
-
+    public BaseNode put(String key, float... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, char... value) {
-
+    public BaseNode put(String key, char... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, short... value) {
-
+    public BaseNode put(String key, short... value) {
+        return null;
     }
 
     @Override
-    public void put(String key, boolean... value) {
-
+    public BaseNode put(String key, boolean... value) {
+        return null;
     }
 
     @Override

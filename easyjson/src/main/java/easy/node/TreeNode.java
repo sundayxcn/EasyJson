@@ -70,10 +70,15 @@ public class TreeNode implements BaseNode {
     @Override
     public BaseNode createNode(String key) {
         BaseNode parentNode = EasyJson.getTargetNode(this,key);
-        key = EasyJson.getFixKey(key);
-        BaseNode treeNode = EasyJson.generatorNullNode(key);
-        parentNode.add(key, treeNode);
-        return treeNode;
+        Object targetNode = parentNode.getChildList().get(key);
+        if(targetNode == null || !(targetNode instanceof BaseNode)){
+            key = EasyJson.getFixKey(key);
+            BaseNode treeNode = EasyJson.generatorNullNode(key);
+            parentNode.add(key, treeNode);
+            return treeNode;
+        }else{
+            return (BaseNode) targetNode;
+        }
     }
 
     public Object getValue() {

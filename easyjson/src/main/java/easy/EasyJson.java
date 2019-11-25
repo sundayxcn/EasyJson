@@ -177,7 +177,11 @@ public class EasyJson implements BaseOperator {
                 String name = field.getName();
                 //获取属性值
                 Object value = field.get(object);
-                if ((field.getModifiers() & Modifier.TRANSIENT) == 0) {
+
+                int modifier = field.getModifiers();
+                if(Modifier.isStatic(modifier) || Modifier.isTransient(modifier)){
+                    //静态变量和不可持久化变量不生成json
+                }else{
                     if (value == null) {
                         put(parentNode, name, "");
                     } else if (value.getClass().isArray()) {
@@ -190,7 +194,6 @@ public class EasyJson implements BaseOperator {
                         put(parentNode, name, value);
                     }
                 }
-
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

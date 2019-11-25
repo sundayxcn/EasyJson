@@ -67,7 +67,20 @@ public class EasyJson implements BaseOperator {
         for (Object o : object) {
             if (BaseTypeUtil.isBaseType(o)) {
 
-            } else {
+            } else if( o instanceof List) {
+                TreeArrayNode treeArrayNode = new TreeArrayNode();
+                Object value = ((List) o).get(0);
+                if (BaseTypeUtil.isBaseType(value)) {
+                    treeArrayNode.setValue(((List) o));
+                } else {
+                    for (Object child : ((List) o)) {
+                        TreeNode treeNode = new TreeNode();
+                        putAllValue(treeNode, child);
+                        treeArrayNode.add("", treeNode);
+                    }
+                }
+                easyJson.mRootNode = treeArrayNode;
+            }else{
                 easyJson.putAllKeyValue(o);
             }
         }

@@ -1,15 +1,18 @@
 package easy.node;
 
 import android.text.TextUtils;
+import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import easy.EasyJson;
 import easy.json.JsonBuild;
 
-import static easy.EasyJson.NULL_STRING;
 import static easy.EasyJson.getObject;
 import static easy.EasyJson.getTargetNode;
 import static easy.EasyJson.putList;
@@ -79,6 +82,19 @@ public class TreeNode implements BaseNode {
         }else{
             return (BaseNode) targetNode;
         }
+    }
+
+    @Override
+    public List<Pair<String, Object>> getChildKeyAndValues() {
+        List list = new ArrayList<Pair<String,Object>>();
+        Set<Map.Entry<String, Object>> set = childList.entrySet();
+        Iterator<Map.Entry<String, Object>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            Pair<String,Object> value = new Pair<>(entry.getKey(),entry.getValue());
+            list.add(value);
+        }
+        return list;
     }
 
     public Object getValue() {

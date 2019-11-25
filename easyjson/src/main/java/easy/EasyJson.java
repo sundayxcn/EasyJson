@@ -2,6 +2,7 @@ package easy;
 
 
 import android.text.TextUtils;
+import android.util.Pair;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -396,6 +397,11 @@ public class EasyJson implements BaseOperator {
     @Override
     public boolean getBoolean(String key) {
         return getBoolean(key, false);
+    }
+
+    @Override
+    public List<Pair<String, Object>> getChildKeyAndValues() {
+        return mRootNode.getChildKeyAndValues();
     }
 
     public <T> List<T> getList(String key, Class<T> tClass) {

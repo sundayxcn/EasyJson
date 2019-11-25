@@ -1,6 +1,10 @@
 package easy;
 
 
+import android.util.Pair;
+
+import java.util.List;
+
 import easy.node.BaseNode;
 
 public interface BaseOperator {
@@ -60,5 +64,7 @@ public interface BaseOperator {
     boolean getBoolean(String key, boolean defaultValue);
 
     boolean getBoolean(String key);
+
+    List<Pair<String,Object>> getChildKeyAndValues();
 
 }

@@ -65,6 +65,24 @@ public interface BaseOperator {
 
     boolean getBoolean(String key);
 
-    List<Pair<String,Object>> getChildKeyAndValues();
+    List<String> getStringList(String key);
+
+    String[] getStringArray(String key);
+
+    int[] getIntArray(String key);
+
+    byte[] getByteArray(String key);
+
+    long[] getLongArray(String key);
+
+    double[] getDoubleArray(String key);
+
+    float[] getFloatArray(String key);
+
+    char[] getCharArray(String key);
+
+    short[] getShortArray(String key);
+
+    boolean[] getBooleanArray(String key);
 
 }

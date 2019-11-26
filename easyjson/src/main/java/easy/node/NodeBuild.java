@@ -226,7 +226,7 @@ public class NodeBuild {
     }
 
 
-    public <T> T node2Bean(BaseNode parent,Class<T> tClass) throws IllegalAccessException,InstantiationException {
+    public static <T> T node2Bean(BaseNode parent,Class<T> tClass) throws IllegalAccessException,InstantiationException {
         T o = generatorBean(tClass);
         //得到所有属性
         Field[] fields = tClass.getDeclaredFields();

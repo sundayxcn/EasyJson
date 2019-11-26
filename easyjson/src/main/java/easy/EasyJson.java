@@ -18,6 +18,7 @@ import java.util.Set;
 import easy.json.JsonBuild;
 import easy.node.BaseNode;
 import easy.node.NodeBuild;
+import easy.node.OperatorNode;
 import easy.node.TreeArrayNode;
 import easy.node.TreeNode;
 import easy.utils.BaseTypeUtil;
@@ -28,7 +29,7 @@ import easy.utils.BaseTypeUtil;
  * @Data 2019-07-04
  * @description stringbuffer 本身会将基本类型装箱，所以对于任何类型都先转换成Object来处理
  */
-public class EasyJson implements BaseOperator {
+public class EasyJson extends OperatorNode {
     public static final String NULL_STRING = "";
     private BaseNode mRootNode;
     private NodeBuild mNodeBuild;
@@ -227,7 +228,6 @@ public class EasyJson implements BaseOperator {
 
     private void init(String json) {
         mNodeBuild = new NodeBuild();
-
         if (TextUtils.isEmpty(json)) {
             mRootNode = new TreeNode();
         } else {
@@ -237,48 +237,8 @@ public class EasyJson implements BaseOperator {
                 e.printStackTrace();
             }
         }
+        thisNode = mRootNode;
 
-    }
-
-    public BaseNode put(String key, Object value) {
-        return mRootNode.put(key, value);
-
-    }
-
-    public BaseNode put(String key, String... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, int... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, byte... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, long... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, double... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, float... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, char... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, short... value) {
-        return mRootNode.put(key, value);
-    }
-
-    public BaseNode put(String key, boolean... value) {
-        return mRootNode.put(key, value);
     }
 
     public String build() {
@@ -324,104 +284,19 @@ public class EasyJson implements BaseOperator {
         removeNode(mRootNode, key);
     }
 
-    @Override
-    public String getString(String key, String defaultValue) {
-        return mRootNode.getString(key, defaultValue);
-    }
-
-    @Override
-    public String getString(String key) {
-        return getString(key, "");
-    }
-
-    @Override
-    public int getInt(String key, int defaultValue) {
-        return mRootNode.getInt(key, defaultValue);
-    }
-
-    @Override
-    public int getInt(String key) {
-        return getInt(key, 0);
-    }
-
-    @Override
-    public byte getByte(String key) {
-        byte v = 'c';
-        return getByte(key, v);
-    }
-
-    @Override
-    public byte getByte(String key, byte defaultValue) {
-        return mRootNode.getByte(key, defaultValue);
-    }
-
-    @Override
-    public long getLong(String key) {
-        return getLong(key, 0);
-    }
-
-    @Override
-    public long getLong(String key, long defaultValue) {
-        return mRootNode.getLong(key, defaultValue);
-    }
-
-    @Override
-    public double getDouble(String key) {
-        return getDouble(key, 0);
-    }
-
-    @Override
-    public double getDouble(String key, double defaultValue) {
-        return mRootNode.getDouble(key, defaultValue);
-    }
-
-    @Override
-    public float getFloat(String key) {
-        return getFloat(key, 0f);
-    }
-
-    @Override
-    public float getFloat(String key, float defaultValue) {
-        return mRootNode.getFloat(key, defaultValue);
-    }
-
-    @Override
-    public char getChar(String key) {
-        return getChar(key, 'c');
-    }
-
-    @Override
-    public char getChar(String key, char defaultValue) {
-        return mRootNode.getChar(key, defaultValue);
-    }
-
-    @Override
-    public short getShort(String key) {
-        return mRootNode.getShort(key);
-    }
-
-    @Override
-    public short getShort(String key, short defaultValue) {
-        return mRootNode.getShort(key, defaultValue);
-    }
-
-    @Override
-    public boolean getBoolean(String key, boolean defaultValue) {
-        return mRootNode.getBoolean(key, defaultValue);
-    }
-
-    @Override
-    public boolean getBoolean(String key) {
-        return getBoolean(key, false);
-    }
 
     @Override
     public List<Pair<String, Object>> getChildKeyAndValues() {
         return mRootNode.getChildKeyAndValues();
     }
 
-    public <T> List<T> getList(String key, Class<T> tClass) {
-        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(mRootNode, key);
+
+    public <T> List<T> getList(String key, Class<T> tClass){
+        return getList(mRootNode,key,tClass);
+    }
+
+    public static <T> List<T> getList(BaseNode baseNode,String key, Class<T> tClass) {
+        TreeArrayNode treeArrayNode = (TreeArrayNode) getObject(baseNode, key);
 
         if (treeArrayNode == null) {
             return new ArrayList<>();
@@ -434,7 +309,7 @@ public class EasyJson implements BaseOperator {
             List classlist = new ArrayList();
             try {
                 for (TreeNode a : parent) {
-                    T o = mNodeBuild.node2Bean(a, tClass);
+                    T o = NodeBuild.node2Bean(a, tClass);
                     classlist.add(o);
                 }
             } catch (IllegalAccessException e) {
@@ -453,7 +328,7 @@ public class EasyJson implements BaseOperator {
 
     public <T> T toBean(Class<T> tClass) {
         try {
-            return mNodeBuild.node2Bean(mRootNode, tClass);
+            return NodeBuild.node2Bean(mRootNode, tClass);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {

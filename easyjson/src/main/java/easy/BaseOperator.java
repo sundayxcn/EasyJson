@@ -49,9 +49,9 @@ public interface BaseOperator {
 
     double getDouble(String key, double defaultValue);
 
-    float getFloat(String key);
-
-    float getFloat(String key, float defaultValue);
+//    float getFloat(String key);
+//
+//    float getFloat(String key, float defaultValue);
 
     char getChar(String key);
 
@@ -77,7 +77,7 @@ public interface BaseOperator {
 
     double[] getDoubleArray(String key);
 
-    float[] getFloatArray(String key);
+//    float[] getFloatArray(String key);
 
     char[] getCharArray(String key);
 

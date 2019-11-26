@@ -246,20 +246,20 @@ public class OperatorNode implements BaseOperator {
         }
     }
 
-    @Override
-    public float getFloat(String key) {
-        return getFloat(key, 0f);
-    }
-
-    @Override
-    public float getFloat(String key, float defaultValue) {
-        Object object = getObject(thisNode, key);
-        if (object == null) {
-            return defaultValue;
-        } else {
-            return (float) object;
-        }
-    }
+//    @Override
+//    public float getFloat(String key) {
+//        return getFloat(key, 0f);
+//    }
+//
+//    @Override
+//    public float getFloat(String key, float defaultValue) {
+//        Object object = getObject(thisNode, key);
+//        if (object == null) {
+//            return defaultValue;
+//        } else {
+//            return (float) object;
+//        }
+//    }
 
     @Override
     public char getChar(String key) {
@@ -364,16 +364,16 @@ public class OperatorNode implements BaseOperator {
         return ints;
     }
 
-    @Override
-    public float[] getFloatArray(String key) {
-        List<Float> list = EasyJson.getList(thisNode,key,Float.class);
-        int size = list.size();
-        float[] ints = new float[size];
-        for(int i = 0; i < list.size();i++){
-            ints[i] = list.get(i);
-        }
-        return ints;
-    }
+//    @Override
+//    public float[] getFloatArray(String key) {
+//        List<Float> list = EasyJson.getList(thisNode,key,Float.class);
+//        int size = list.size();
+//        float[] ints = new float[size];
+//        for(int i = 0; i < list.size();i++){
+//            ints[i] = list.get(i);
+//        }
+//        return ints;
+//    }
 
     @Override
     public char[] getCharArray(String key) {

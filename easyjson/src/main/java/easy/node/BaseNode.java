@@ -1,6 +1,9 @@
 package easy.node;
 
+import android.util.Pair;
+
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import easy.BaseOperator;
 
@@ -29,4 +32,6 @@ public interface BaseNode extends BaseOperator {
     String build();
 
     BaseNode createNode(String key);
+
+    List<Pair<String, Object>> getChildKeyAndValues();
 }

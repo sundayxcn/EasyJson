@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -179,18 +180,32 @@ public class NodeBuild {
     }
 
     private String readString() {
-        int index = arrayIndex;
+        int index = 0;
+        char[] target = charString;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
-            arrayIndex++;
+            //扩容
+            if(arrayIndex > target.length){
+                target = Arrays.copyOf(target,target.length * 2);
+            }
             //解决字符串中存在逗号会中断
             if (v == DOUBLE_Q ){//|| v == COMMA) {
-                String value = String.valueOf(jsonArray, index, arrayIndex - index - 1);
+                String value = String.valueOf(target, 0, index);
+                arrayIndex++;
                 return value;
             } else if(v == STOP){//反斜杠过滤
+                //去除“的反斜杠
                 arrayIndex++;
+                if(jsonArray[arrayIndex] == DOUBLE_Q){
+                    arrayIndex++;
+                    target[index++] = DOUBLE_Q;
+                }else{
+
+                }
+
             } else{
-                //charString[index++] = v;
+                target[index++] = v;
+                arrayIndex++;
             }
 
         }

@@ -179,14 +179,19 @@ public class NodeBuild {
         return Integer.valueOf("0");
     }
 
+
+    private char[] riseArray(char[] oldArray){
+        return Arrays.copyOf(oldArray,oldArray.length + 1024 * 2);
+    }
+    
     private String readString() {
         int index = 0;
         char[] target = charString;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
             //扩容
-            if(arrayIndex > target.length){
-                target = Arrays.copyOf(target,target.length * 2);
+            if(index > target.length){
+                target = riseArray(target);
             }
             //解决字符串中存在逗号会中断
             if (v == DOUBLE_Q ){//|| v == COMMA) {

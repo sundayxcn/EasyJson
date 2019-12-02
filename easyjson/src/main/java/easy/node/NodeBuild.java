@@ -187,7 +187,7 @@ public class NodeBuild {
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
             //扩容
-            if(index > target.length){
+            if(index >= target.length){
                 target = riseArray(target);
             }
             //解决字符串中存在逗号会中断

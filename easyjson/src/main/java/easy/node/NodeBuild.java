@@ -149,14 +149,15 @@ public class NodeBuild {
     }
 
     private Number readNumber() {
-        int index = 0;
+        //int index = 0;
         int type = TYPE_INT;
+        int begin = arrayIndex;
         while (arrayIndex < size) {
             char v = jsonArray[arrayIndex];
             if (v == COMMA || v == ARRAY_END || v == NODE_END) {
-                String value = String.valueOf(charString, 0, index);
+                String value = String.valueOf(jsonArray, begin, arrayIndex - begin);
                 if (type == TYPE_INT) {
-                    if (index > 10) {
+                    if (arrayIndex - begin > 10) {
                         return Long.valueOf(value);
                     } else {
                         return Integer.valueOf(value);
@@ -166,12 +167,8 @@ public class NodeBuild {
                 }
             } else if (v == '.') {
                 type = TYPE_DOUBLE;
-                charString[index++] = v;
                 arrayIndex++;
-            } else if(charIsNumber(v)){
-                charString[index++] = v;
-                arrayIndex++;
-            } else {
+            } {
                 arrayIndex++;
             }
         }

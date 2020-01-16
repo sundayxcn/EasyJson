@@ -95,10 +95,24 @@ public class EasyJson extends OperatorNode {
             parentNode.add(key, value);
             return parentNode;
         } else {
-            BaseNode treeNode = generatorNullNode(key);
-            parentNode.add(key, treeNode);
-            putAllValue(treeNode, value);
-            return treeNode;
+            if(value instanceof BaseNode){
+
+                BaseNode current = getCurrentNode(parentNode,key);
+                if(current == null){
+                    BaseNode treeNode = generatorNullNode(key);
+                    parentNode.add(key, treeNode);
+                    join(treeNode, (BaseNode) value);
+                    return treeNode;
+                }else {
+                    join(current, (BaseNode) value);
+                    return current;
+                }
+            }else {
+                BaseNode treeNode = generatorNullNode(key);
+                parentNode.add(key, treeNode);
+                putAllValue(treeNode, value);
+                return treeNode;
+            }
         }
 
     }
@@ -412,6 +426,19 @@ public class EasyJson extends OperatorNode {
     }
 
 
+
+    public static void join(BaseNode parentNode,BaseNode childNode){
+        Map<String, Object> map = childNode.getChildList();
+        Set<Map.Entry<String, Object>> set = map.entrySet();
+        Iterator<Map.Entry<String, Object>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            parentNode.add(entry.getKey(), entry.getValue());
+        }
+    }
+
+
+
     /**
      * 连接Json串，将json插入到一个新key
      *
@@ -440,6 +467,19 @@ public class EasyJson extends OperatorNode {
 
     public BaseNode getNode(String key) {
         BaseNode baseNode = getTargetNode(mRootNode, key);
+        String realKey = getFixKey(key);
+        Map<String, Object> map = baseNode.getChildList();
+        Object object = map.get(realKey);
+        if (object instanceof BaseNode) {
+            return ((BaseNode) object);
+        } else {
+            return null;
+        }
+    }
+
+
+    public static BaseNode getCurrentNode(BaseNode parentNode,String key){
+        BaseNode baseNode = getTargetNode(parentNode, key);
         String realKey = getFixKey(key);
         Map<String, Object> map = baseNode.getChildList();
         Object object = map.get(realKey);

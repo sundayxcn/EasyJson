@@ -352,7 +352,7 @@ public class EasyJson extends OperatorNode {
     }
 
     public <T> T toBean(String key, Class<T> tClass) {
-        Object o = getTargetNode(mRootNode, key);
+        Object o = getTargetNode(mRootNode, key).getChildList().get(key);
         if (o == null) {
             return null;
         } else {

@@ -243,7 +243,7 @@ public class NodeBuild {
     }
 
 
-    public static <T> T node2Bean(BaseNode parent,Class<T> tClass) throws IllegalAccessException,InstantiationException {
+    public static <T> T node2Bean(BaseNode parent,Class<T> tClass) throws IllegalAccessException,InstantiationException,Exception {
         T o = generatorBean(tClass);
         //得到所有属性
         Field[] fields = tClass.getDeclaredFields();
@@ -278,7 +278,12 @@ public class NodeBuild {
                             }
                         }
                     }else{
-                        field.set(o, value);
+                        //解决本地bean设置为String，接口回传不是String导致异常
+                        if(type.equals("String")){
+                            field.set(o, String.valueOf(value));
+                        }else{
+                            field.set(o, value);
+                        }
                     }
                 }else {
                     Object t = parent.getChildList().get(name);

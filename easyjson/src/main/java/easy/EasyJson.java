@@ -342,9 +342,7 @@ public class EasyJson extends OperatorNode {
     public <T> T toBean(Class<T> tClass) {
         try {
             return NodeBuild.node2Bean(mRootNode, tClass);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
 
@@ -362,12 +360,9 @@ public class EasyJson extends OperatorNode {
                 try {
                     BaseNode parent = (BaseNode) o;
                     return mNodeBuild.node2Bean(parent, tClass);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
         }

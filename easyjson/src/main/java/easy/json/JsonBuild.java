@@ -97,21 +97,33 @@ public class JsonBuild {
             stringBuffer.append(NODE_START);
             TreeNode treeNode = (TreeNode) object;
             Set<Map.Entry<String, Object>> set = treeNode.getChildList().entrySet();
-            Iterator<Map.Entry<String, Object>> iterator = set.iterator();
-            while (iterator.hasNext()){
-                Map.Entry<String, Object> entry = iterator.next();
-                buildChild(entry.getKey(),entry.getValue());
+            if(set.isEmpty()){
+                stringBuffer.append(NODE_END);
+                stringBuffer.append(COMMA);
+            }else{
+                Iterator<Map.Entry<String, Object>> iterator = set.iterator();
+                while (iterator.hasNext()){
+                    Map.Entry<String, Object> entry = iterator.next();
+                    buildChild(entry.getKey(),entry.getValue());
+                }
+                replaceLastChar(NODE_END);
             }
-            replaceLastChar(NODE_END);
+
 
         }else if(object instanceof TreeArrayNode){
             List<Object> list = ((TreeArrayNode) object).getList();
             addKey(key);
-            stringBuffer.append(ARRAY_START);
-            for(Object o : list){
-                buildChild(null,o);
+            if(list.isEmpty()){
+                stringBuffer.append(ARRAY_START);
+                stringBuffer.append(ARRAY_END);
+                stringBuffer.append(COMMA);
+            }else {
+                stringBuffer.append(ARRAY_START);
+                for (Object o : list) {
+                    buildChild(null, o);
+                }
+                replaceLastChar(ARRAY_END);
             }
-            replaceLastChar(ARRAY_END);
         }else if(object instanceof String){
             addString(key, object);
         }else if(object instanceof Number){
